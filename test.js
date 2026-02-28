@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         _Local Loader
-// @version      0.0.1
+// @version      0.0.2
 // @match        https://www.youtube.com/*
 // @grant        none
 // @run-at       document-idle
@@ -10,5 +10,5 @@
 
 (function () {
     "use strict";
-    console.log("here");
+    console.log("here2");
 })();
