@@ -13,9 +13,9 @@
     "use strict";
 
     const CONFIG = {
-        minViews: 2000,
-        debug: false,
-        debounceMs: 250,
+        minViews: 1000,
+        debug: true,
+        debounceMs: 200,
         elementsToHide: [
             "#voice-search-button",
             "ytd-talk-to-recs-flow-renderer",
