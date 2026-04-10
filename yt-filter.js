@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Filter
-// @version      1.0.0
+// @version      1.0.1
 // @description  Declutter YouTube
 // @match        https://www.youtube.com/*
 // @grant        none
