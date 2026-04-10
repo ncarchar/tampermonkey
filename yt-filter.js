@@ -84,7 +84,9 @@
             /* skip if the element is not visible */
             if (item.offsetParent === null) return;
 
-            const textElements = Array.from(item.querySelectorAll(".yt-core-attributed-string"));
+            const textElements = Array.from(
+              item.querySelectorAll(".yt-core-attributed-string, .ytContentMetadataViewModelMetadataRow")
+            );
             const texts = textElements.map((e) => e.textContent);
 
             const views = parseViews(texts);
