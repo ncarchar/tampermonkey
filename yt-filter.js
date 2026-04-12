@@ -73,7 +73,7 @@
     const filterVideos = () => {
         if (window.location.pathname !== "/") return;
 
-        const items = document.querySelectorAll("ytd-rich-item-renderer:not([data-yt-filtered])");
+        const items = document.querySelector("ytd-rich-grid-renderer").querySelectorAll("ytd-rich-item-renderer:not([data-yt-filtered])");
         if (items.length === 0) return;
 
         const logs = [];
