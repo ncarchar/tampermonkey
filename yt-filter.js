@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Filter
-// @version      1.0.1
+// @version      1.0.2
 // @description  Declutter YouTube
 // @match        https://www.youtube.com/*
 // @grant        none
@@ -16,6 +16,7 @@
         minViews: 1000,
         debug: true,
         debounceMs: 200,
+        titlesToHide: ["AI"],
         elementsToHide: [
             "#voice-search-button",
             "ytd-talk-to-recs-flow-renderer",
@@ -73,7 +74,9 @@
     const filterVideos = () => {
         if (window.location.pathname !== "/") return;
 
-        const items = document.querySelector("ytd-rich-grid-renderer").querySelectorAll("ytd-rich-item-renderer:not([data-yt-filtered])");
+        const items = document
+            .querySelector("ytd-rich-grid-renderer")
+            .querySelectorAll("ytd-rich-item-renderer:not([data-yt-filtered])");
         if (items.length === 0) return;
 
         const logs = [];
@@ -85,13 +88,26 @@
             if (item.offsetParent === null) return;
 
             const textElements = Array.from(
-              item.querySelectorAll(".yt-core-attributed-string, .ytContentMetadataViewModelMetadataRow")
+                item.querySelectorAll(
+                    ".yt-core-attributed-string, .ytContentMetadataViewModelMetadataRow"
+                )
             );
+
             const texts = textElements.map((e) => e.textContent);
+
+            const titleNode = item.querySelector("h3.ytLockupMetadataViewModelHeadingReset");
+
+            const videoTitle = titleNode?.getAttribute("title");
+
+            const hasMatch = CONFIG.titlesToHide.some((word) => {
+                const safeWord = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                const regex = new RegExp(`(^|\\W)${safeWord}(\\W|$)`, "i");
+                return regex.test(videoTitle ?? "");
+            });
 
             const views = parseViews(texts);
 
-            if (Number.isNaN(views) || views < CONFIG.minViews) {
+            if (Number.isNaN(views) || views < CONFIG.minViews || hasMatch) {
                 item.style.display = "none";
                 if (CONFIG.debug) {
                     logs.push({ title: texts[0] || "Unknown", views: views });
